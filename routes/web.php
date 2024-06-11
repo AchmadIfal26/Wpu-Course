@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -23,11 +24,52 @@ Route::get('/contact', function () {
     ]);
 });
 
-Route::get('/blog', function () {
-    return view('blog', [
-        'judul' => 'Lorem ipsum dolor sit amet.',
-        'isi' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt illum voluptas iste aperiam. Ad asperiores consequuntur natus amet? Necessitatibus dolor repellat fugiat sint, ducimus temporibus corrupti soluta cumque tempore voluptas unde accusantium dolorum nesciunt eum incidunt hic? Quaerat, error expedita. Voluptas cupiditate maxime eos, rerum ipsum odit earum ipsam fuga facilis temporibus perferendis, pariatur, aspernatur libero quia! Consectetur temporibus, quasi, numquam eum voluptatum ipsam nihil esse ratione distinctio at rerum sunt similique ut repudiandae modi nostrum consequatur vel blanditiis praesentium ab debitis possimus perspiciatis enim! Explicabo, dignissimos maiores. Dignissimos fugit fugiat at ullam nam? Ut tempora laboriosam culpa sit earum.',
-        'title' => 'Blog'
+Route::get('/posts', function () {
+    return view('posts', [
+        'title' => 'Blog',
+        'posts' => [
+            [
+                'id' => 1,
+                'slug' => 'judul-artikel-1',
+                'title' => 'Judul Artikel 1',
+                'author' => 'Achmad Ifal',
+                'body' => 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nobis tempora, hic tenetur magni id impedit laudantium laborum! Sequi illo animi soluta asperiores ducimus, nesciunt minima culpa reiciendis atque! Excepturi, saepe!'
+            ],
+            [
+                'id' => 2,
+                'slug' => 'judul-artikel-2',
+                'title' => 'Judul Artikel 2',
+                'author' => 'Achmad Ifal',
+                'body' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates, maiores vel facilis exercitationem nihil dolor praesentium nesciunt? Voluptates soluta culpa laudantium eaque expedita, facilis delectus, dicta quam architecto, nam corrupti?'
+            ],
+        ],
+    ]);
+});
+
+Route::get('/posts/{slug}', function($slug) {
+    $posts = [
+        [
+            'id' => 1,
+            'slug' => 'judul-artikel-1',
+            'title' => 'Judul Artikel 1',
+            'author' => 'Achmad Ifal',
+            'body' => 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nobis tempora, hic tenetur magni id impedit laudantium laborum! Sequi illo animi soluta asperiores ducimus, nesciunt minima culpa reiciendis atque! Excepturi, saepe!'
+        ],
+        [
+            'id' => 2,
+            'slug' => 'judul-artikel-2',
+            'title' => 'Judul Artikel 2',
+            'author' => 'Achmad Ifal',
+            'body' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates, maiores vel facilis exercitationem nihil dolor praesentium nesciunt? Voluptates soluta culpa laudantium eaque expedita, facilis delectus, dicta quam architecto, nam corrupti?'
+        ],
+    ];
+    $post = Arr::first($posts, function($post) use ($slug) {
+        return $post['slug'] == $slug;
+    });
+
+    return view('post', [
+        'title' => 'Single Post',
+        'post' => $post
     ]);
 });
 
